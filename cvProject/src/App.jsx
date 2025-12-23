@@ -2,14 +2,16 @@ import { useState, useEffect} from "react"
 import "./App.css"
 
 export function App (){
-    const [startMessage, setStartMessage] = useState("¡Espacio de tareas vacía!")
+    const [counterFilters, setCounterFilters] = useState([{all: 0, isFiltering: true}, 
+                                                            {active: 0, isFiltering: false}, 
+                                                            {completed: 0, isFiltering: false}])
     const [taskName, setTaskName] = useState('')
     const [tasks, setTasks] = useState([])
 
     function handleAddTask(e){
         e.preventDefault(); // evita que el formulario recargue la página
         if(!taskName?.trim()) return // evita agregar tareas vacías o con solo espacios
-        setTasks(prev => [...prev, {id: Date.now(), name: taskName, done: false}])
+        setTasks(prev => [...prev, {id: Date.now(), name: taskName, done: false, isEditing: false, tempText: ''}])
         setTaskName('')
     }
 
@@ -22,6 +24,46 @@ export function App (){
         const newArrayTasks = tasks.map(task => {
             if (task.id == id) {
                 return{...task,  done: !task.done}
+            }
+            return task
+        })
+        setTasks(newArrayTasks)
+    }
+
+    function editTask(id){
+        const newArrayTasks = tasks.map((task) => {
+            if(task.id === id){
+                return {...task, isEditing: !task.isEditing, tempText: task.name}
+            }
+            return task
+        })
+        setTasks(newArrayTasks)
+    }
+
+    function handlerEditingTask(id, newText){
+        const newArrayTasks = tasks.map((task) => {
+            if (task.id === id) {
+                return {...task, tempText: newText}
+            }
+            return task
+        })
+        setTasks(newArrayTasks)
+    }
+
+    function updateTask(id){
+        const newArrayTasks = tasks.map((task) =>{
+            if (task.id === id) {
+                return {...task, name: task.tempText, isEditing: !task.isEditing, tempText: ''}
+            }
+            return task
+        })
+        setTasks(newArrayTasks)
+    }
+
+    function cancelTask(id){
+        const newArrayTasks = tasks.map((task) => {
+            if (task.id === id) {
+                return {...task, isEditing: !task.isEditing, tempText: ''}
             }
             return task
         })
@@ -42,26 +84,56 @@ export function App (){
                         placeholder="Add a new Task"
                         value={taskName}
                         onChange={e => setTaskName(e.target.value)}
-                        className="border flex-1 px-2 py-3 rounded text-l"/>
+                        className="border flex-1 px-2 py-3 rounded text-xl"/>
                     <button onClick={handleAddTask}
                         className="px-4 py-2 rounded bg-blue-600 text-white cursor-pointer">
                         Add
                     </button>
                 </form>
-                {tasks.length < 1? <p className="flex justify-center text-2xl text-gray-500">{startMessage}</p>:""}
+                <nav className="flex justify-center gap-10">
+                    <a className="rounded bg-gray-600 px-5 py-1 cursor-pointer text-white">All</a>
+                    <a>Active</a>
+                    <a>Completed</a>
+                </nav>
+                {tasks.length < 1? <p className="flex justify-center text-2xl text-gray-500">¡Espacio de tareas vacía!</p>:""}
                 {/**Div list */}
                 <div className="grid gap-2 lg:grid-cols-2">
                     {tasks.map((task) =>(
                         // Card task
                         <div key={task.id}
                             className="border flex items-center gap-2 p-2 my-1 rounded">
-                                <input type="checkbox" 
-                                    onChange={() => completeTask(task.id)}/>
-                                <span className={`flex-1 wrap-anywhere ${task.done? "line-through text-gray-500": "text-black" }`}>{task.name}</span>
-                                <button className="px-2 py-1 rounded bg-red-500 text-white cursor-pointer"
-                                    onClick={() => deleteTask(task.id)}>
-                                    Delete
-                                </button>
+                                {task.isEditing?
+                                <>
+                                    <input type="checkbox" 
+                                        onChange={() => completeTask(task.id)}/>
+                                    <input type="text"
+                                        value={task.tempText ?? ''} // => Si no es nulo ni undefined se queda con el valor de la izquierda de lo contrario: ''
+                                        onChange={(e) => handlerEditingTask(task.id, e.target.value)}/>
+                                    <button className="px-2 py-1 rounded bg-green-500 text-white cursor-pointer"
+                                            onClick={() => updateTask(task.id)}>
+                                        Save
+                                    </button>
+                                    <button className="px-2 py-1 rounded bg-red-500 text-white cursor-pointer"
+                                            onClick={() => cancelTask(task.id)}>
+                                        Cancel
+                                    </button>
+                                </>
+                                :
+                                <>
+                                    <input type="checkbox" 
+                                        onChange={() => completeTask(task.id)}/>
+                                    <span className={`flex-1 wrap-anywhere ${task.done? "line-through text-gray-500": "text-black" }`}>{task.name}</span>
+                                    <button className="px-2 py-1 rounded bg-amber-500 text-white cursor-pointer"
+                                            onClick={() => editTask(task.id)}>
+                                        Edit
+                                    </button>
+                                    <button className="px-2 py-1 rounded bg-red-500 text-white cursor-pointer"
+                                            onClick={() => deleteTask(task.id)}>
+                                        Delete
+                                    </button>
+                                </>
+                                }
+                                
                         </div>
                     ))}
                 </div>
