@@ -2,9 +2,9 @@ import { useState, useEffect} from "react"
 import "./App.css"
 
 export function App (){
-    const [counterFilters, setCounterFilters] = useState([{all: 0, isFiltering: true}, 
-                                                            {active: 0, isFiltering: false}, 
-                                                            {completed: 0, isFiltering: false}])
+    const [filters, setFilters] = useState([{id: Date.now(), nameFilter: 'All', counter: 0, isFiltering: true}, 
+        {id: Date.now(), nameFilter:'Active', counter: 0, isFiltering: false}, 
+        {id: Date.now(), nameFilter:'Completed', counter: 0, isFiltering: false}])
     const [taskName, setTaskName] = useState('')
     const [tasks, setTasks] = useState([])
 
@@ -70,8 +70,12 @@ export function App (){
         setTasks(newArrayTasks)
     }
 
+    function switchFilter(id){
+        
+    }
+
     useEffect(() => {
-        console.log(tasks)
+        console.log(tasks, filters)
     }, [tasks])
 
     return (
@@ -90,16 +94,24 @@ export function App (){
                         Add
                     </button>
                 </form>
-                <nav className="flex justify-center gap-10">
-                    <a className="rounded bg-gray-600 px-5 py-1 cursor-pointer text-white">All</a>
-                    <a>Active</a>
-                    <a>Completed</a>
+                {/**---Filtros--- */}
+                <nav className="flex justify-center gap-3 sm:gap-10">
+                    {filters.map((filter,i) => 
+                        // Interpolación de cadenas => {`${}`}
+                        <div className={`rounded flex flex-col items-center px-6 py-1 cursor-pointer ${filter.isFiltering ? "text-white bg-gray-700" : "text-black bg-gray-100"}`}
+                            key={i} onClick={() => switchFilter(filter.id)}>
+                                <span className="text-sm">{filter.nameFilter}</span>
+                                <span>{filter.counter}</span>
+                        </div>
+                        
+                    )}
+                    
                 </nav>
                 {tasks.length < 1? <p className="flex justify-center text-2xl text-gray-500">¡Espacio de tareas vacía!</p>:""}
-                {/**Div list */}
+                {/**Div list*/}
                 <div className="grid gap-2 lg:grid-cols-2">
                     {tasks.map((task) =>(
-                        // Card task
+                        // ---Card task---
                         <div key={task.id}
                             className="border flex items-center gap-2 p-2 my-1 rounded">
                                 {task.isEditing?
@@ -122,7 +134,9 @@ export function App (){
                                 <>
                                     <input type="checkbox" 
                                         onChange={() => completeTask(task.id)}/>
-                                    <span className={`flex-1 wrap-anywhere ${task.done? "line-through text-gray-500": "text-black" }`}>{task.name}</span>
+                                    <span className={`flex-1 wrap-anywhere ${task.done? "line-through text-gray-500": "text-black" }`}>
+                                        {task.name}
+                                    </span>
                                     <button className="px-2 py-1 rounded bg-amber-500 text-white cursor-pointer"
                                             onClick={() => editTask(task.id)}>
                                         Edit
