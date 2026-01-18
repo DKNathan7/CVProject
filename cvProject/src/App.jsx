@@ -5,6 +5,7 @@ export function App (){
     const [filters, setFilters] = useState([{id: Date.now()+(Math.random()*1000).toPrecision(5), nameFilter: 'All', isFiltering: true}, 
         {id: Date.now()+(Math.random()*1000).toPrecision(5), nameFilter:'Active', isFiltering: false}, 
         {id: Date.now()+(Math.random()*1000).toPrecision(5), nameFilter:'Completed', isFiltering: false}])
+    const activeFilter = filters.find(f => f.isFiltering)?.nameFilter // Almacena el nombre del filtro que cumpla la condición para mi lista derivada
     const [taskName, setTaskName] = useState('')
     const [tasks, setTasks] = useState([])
 
@@ -78,6 +79,18 @@ export function App (){
         return 0
     }
 
+    function getFilteredTasks(){
+        if(activeFilter === 'Active'){
+            return tasks.filter(task => !task.done)
+        }
+
+        if(activeFilter === 'Completed'){
+            return tasks.filter(task => task.done)
+        }
+
+        return tasks // --> All
+    }
+
     useEffect(() => {
         // Cuerpo
     }, [tasks])
@@ -114,7 +127,7 @@ export function App (){
                 {tasks.length < 1? <p className="flex justify-center text-2xl py-5 text-gray-500">¡Espacio de tareas vacía!</p>:""}
                 {/**Div list*/}
                 <div className="grid gap-2 lg:grid-cols-2">
-                    {tasks.map((task) =>(
+                    {getFilteredTasks().map((task) =>( // --> Muestra la lista pero filtrada según si es all, active o completed
                         // ---Card task---
                         <div key={task.id}
                             className="border flex items-center gap-2 p-2 my-1 rounded">
@@ -124,7 +137,8 @@ export function App (){
                                         onChange={() => completeTask(task.id)}/>
                                     <input type="text"
                                         value={task.tempText ?? ''} // => Si no es nulo ni undefined se queda con el valor de la izquierda de lo contrario: ''
-                                        onChange={(e) => handlerEditingTask(task.id, e.target.value)}/>
+                                        onChange={(e) => handlerEditingTask(task.id, e.target.value)}
+                                        className="border-3 border-blue-500"/>
                                     <button className="px-2 py-1 rounded bg-green-500 text-white cursor-pointer"
                                             onClick={() => updateTask(task.id)}>
                                         Save
