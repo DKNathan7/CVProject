@@ -7,7 +7,15 @@ export function App (){
         {id: Date.now()+(Math.random()*1000).toPrecision(5), nameFilter:'Completed', isFiltering: false}])
     const activeFilter = filters.find(f => f.isFiltering)?.nameFilter // Almacena el nombre del filtro que cumpla la condición para mi lista derivada
     const [taskName, setTaskName] = useState('')
-    const [tasks, setTasks] = useState([])
+    const [tasks, setTasks] = useState(() => {{
+        try { // Buscar en localstorage si almacena tareas para añadirlos a la aplicación
+            const storedTasks = localStorage.getItem("tasks")
+            return storedTasks ? JSON.parse(storedTasks) : []
+        } catch (error) { // --> Con localstorage nunca es 100% seguro así que se mete un catch
+            console.log("Error parsing tasks from localstorage", error)
+            return []
+        }
+    }})
 
     function handleAddTask(e){
         e.preventDefault(); // evita que el formulario recargue la página
@@ -92,7 +100,8 @@ export function App (){
     }
 
     useEffect(() => {
-        // Cuerpo
+        // En cada render, se almacenarán las tareas en localStorage
+        localStorage.setItem("tasks",JSON.stringify(tasks))
     }, [tasks])
 
     return (
