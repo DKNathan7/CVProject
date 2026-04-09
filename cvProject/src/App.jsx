@@ -20,7 +20,8 @@ export function App (){
     function handleAddTask(e){
         e.preventDefault(); // evita que el formulario recargue la página
         if(!taskName?.trim()) return // evita agregar tareas vacías o con solo espacios
-        setTasks(prev => [...prev, {id: Date.now()+(Math.random()*1000).toPrecision(5), name: taskName, done: false, isEditing: false, tempText: ''}])
+        setTasks(prev => [...prev, {id: Date.now()+(Math.random()*1000).toPrecision(5), name: taskName, done: false, isEditing: false, tempText: '', 
+            startedAt: Date.now(), completedAt: null}])
         setTaskName('')
     }
 
@@ -174,7 +175,7 @@ export function App (){
                                     </button>
                                 </>
                                 }
-                                
+
                         </div>
                     ))}
                 </div>
