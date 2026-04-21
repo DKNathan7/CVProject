@@ -15,6 +15,7 @@ export function App () {
     const email = "santiago123@gmail.com"
     const password = "123"
     const [users, setUsers] = useState({name:"Santiago"})
+    const [images, setImages] = useState([])
 
     function startSesion (){
         if (usrInput == email && pswInput === password) {
@@ -23,8 +24,20 @@ export function App () {
         }
         
     }
+
+    useEffect(() => {
+        async function loadImages() {
+            const response = await fetch("http://localhost:3001/images")
+            const data = await response.json()
+            console.log(data.photos[0].src)
+            setImages(data.photos)
+        }
+
+        loadImages()
+    }, [])
     return (
-        <div className="min-h-screen bg-gray-700 text-white">
+        <div className="min-h-screen bg-[#23272f] text-white">
+            
             {/**CONTENIDO DEL LOGIN */}
             {accOpened && ( // --> Renderizado condicional para el MODAL
                 <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50" onClick={() => setAccOpened(false)}>
@@ -33,33 +46,33 @@ export function App () {
                         <HiOutlineX className="hover:text-red-500 hover:bg-gray-100 transition"/>
                     </button>
                       <div className="flex flex-col gap-5">
-                          <h3 className="flex justify-center text-xl font-semibold">Iniciar sesión</h3>
-                          <form className="flex flex-col gap-3" onSubmit={(e) => {e.preventDefault()
-                                                                                          startSesion()
-                                                                                          }}>
-                              <div className="flex items-center gap-2" >
-                                  <label htmlFor="Email"><FiUser className="text-xl"/></label><input type="email" id="Email" className="border p-1 flex flex-1 pl-3" placeholder="Email" required onChange={(e) => setUsrInput(e.target.value)}/>
-                              </div>
-                              <div className="flex items-center gap-2">
-                                  <label htmlFor="Password"><FiLock className="text-xl"/></label><input type="password" id="Password" className="border p-1 flex flex-1 pl-3" placeholder="Password" required onChange={(e) => setPswInput(e.target.value)}/>
-                              </div>
-                              <button type="submit" className="border cursor-pointer bg-amber-500 p-1 w-full py-2 font-semibold rounded hover:bg-amber-600 transition focus:outline-none focus:ring-2 focus:ring-orange-400">
-                                  Iniciar Sesion
-                              </button>
-                          </form>
-                          <span className="underline text-xs cursor-pointer font-medium">He olvidado mi contraseña</span>
-                          <div className="flex flex-col">
-                              <div className="flex items-center gap-3 my-4">
-                              <div className="flex-1 h-px bg-gray-300"></div>
-                                  <span className="text-gray-500 text-sm whitespace-nowrap">
-                                    o continúa con
-                                  </span>
-                                  <div className="flex-1 h-px bg-gray-300"></div>
-                              </div>
-                              <div className="flex flex-col gap-3">
-                                  <button className="flex border cursor-pointer gap-2 items-center p-1 justify-center hover:bg-gray-100 transition"><FcGoogle className="text-xl"/>Continuar con Google</button>
-                                  <span className="flex text-xs gap-1 justify-center font-medium"><h3>No tienes una cuenta?</h3><h3 className="text-blue-500 cursor-pointer font-bold">Crear una</h3></span>    
-                              </div>
+                            <h3 className="flex justify-center text-xl font-semibold">Iniciar sesión</h3>
+                            <form className="flex flex-col gap-3" onSubmit={(e) => {e.preventDefault()
+                                                                                            startSesion()
+                                                                                            }}>
+                                <div className="flex items-center gap-2" >
+                                    <label htmlFor="Email"><FiUser className="text-xl"/></label><input type="email" id="Email" className="border p-1 flex flex-1 pl-3" placeholder="Email" required onChange={(e) => setUsrInput(e.target.value)}/>
+                                </div>
+                                <div className="flex items-center gap-2">
+                                    <label htmlFor="Password"><FiLock className="text-xl"/></label><input type="password" id="Password" className="border p-1 flex flex-1 pl-3" placeholder="Password" required onChange={(e) => setPswInput(e.target.value)}/>
+                                </div>
+                                <button type="submit" className="border cursor-pointer bg-amber-500 p-1 w-full py-2 font-semibold rounded hover:bg-amber-600 transition focus:outline-none focus:ring-2 focus:ring-orange-400">
+                                    Iniciar Sesion
+                                </button>
+                            </form>
+                            <span className="underline text-xs cursor-pointer font-medium">He olvidado mi contraseña</span>
+                            <div className="flex flex-col">
+                                <div className="flex items-center gap-3 my-4">
+                                <div className="flex-1 h-px bg-gray-300"></div>
+                                    <span className="text-gray-500 text-sm whitespace-nowrap">
+                                      o continúa con
+                                    </span>
+                                    <div className="flex-1 h-px bg-gray-300"></div>
+                                </div>
+                                <div className="flex flex-col gap-3">
+                                    <button className="flex border cursor-pointer gap-2 items-center p-1 justify-center hover:bg-gray-100 transition"><FcGoogle className="text-xl"/>Continuar con Google</button>
+                                    <span className="flex text-xs gap-1 justify-center font-medium"><h3>No tienes una cuenta?</h3><h3 className="text-blue-500 cursor-pointer font-bold">Crear una</h3></span>    
+                                </div>
                           </div>
                       </div>
                     </div>
@@ -91,36 +104,45 @@ export function App () {
                 </div>
             </div>
 
-            <header className="border-b p-1">
-                <div className="flex items-center justify-between px-6 gap-6">
-                    <a href="#">
-                        <img src={logo} alt="logo_EComerce" className="w-16"/>
-                    </a>
-                    <div className="flex items-center gap-2 cursor-pointer p-2 rounded hover:bg-gray-600 transition">
-                        <FiMenu className="text-xl"/><h3>Todas las categorías</h3>
+            <header className="border-b p-4">
+                <div className="max-w-7xl mx-auto flex items-center justify-between gap-6">
+                    <div className="flex items-center gap-3" id="headLeft">
+                        <a href="#">
+                            <img src={logo} alt="logo_EComerce" className="w-16"/>
+                        </a>
+                        <div className="flex items-center gap-2 cursor-pointer p-3 rounded hover:bg-gray-600 transition">
+                            <FiMenu className="text-xl"/><h3>Todas las categorías</h3>
+                        </div>
                     </div>
-                    <div className="flex w-96">
+                    <div className="flex flex-1" id="headMid">
                         <input type="text" className="border h-10 rounded-l-md border-r-0 pl-4 flex-1" placeholder="Buscar" name="search"/>
-                        <button className="border h-10 px-3 py-2 bg-orange-500 border-l-0 rounded-r-md flex items-center justify-center cursor-pointer hover:bg-amber-600 transition">
+                        <button className="border h-10 px-3 py-2 bg-orange-500 border-l-0 rounded-r-md flex items-center justify-center cursor-pointer hover:bg-amber-600 transition focus:ring-2 focus:ring-orange-400">
                             <FiSearch className="text-xl"/>
                         </button>
                     </div>
-                    <div className="flex items-center gap-2 cursor-pointer p-2 rounded hover:bg-gray-600 transition" onClick={() => setAccOpened(true)}>
-                        <FiUser className="text-xl"/>
-                        <span>{nameUser}</span>
-                    </div>
-                    <div className="flex items-center gap-3 cursor-pointer p-2 rounded hover:bg-gray-600 transition" onClick={() => setCartOpened(true)}>
-                        <div className="relative">
-                            <FiShoppingCart className="text-xl" />
-                            <span id="cartArticlesNum" className="absolute -top-2 -right-2 bg-red-500 text-white text-xs w-5 h-5 flex items-center justify-center rounded-full">0</span>
+                    <div className="flex items-center justify-center gap-3" id="headRight">
+                        <div className="flex items-center gap-2 cursor-pointer p-3 rounded hover:bg-gray-600 transition focus:bg-gray-900" onClick={() => setAccOpened(true)}>
+                            <FiUser className="text-xl"/>
+                            <span>{nameUser}</span>
                         </div>
-                        <h3>Mi cesta</h3>
+                        <div className="flex items-center gap-3 cursor-pointer p-3 rounded hover:bg-gray-600 transition" onClick={() => setCartOpened(true)}>
+                            <div className="relative">
+                                <FiShoppingCart className="text-xl" />
+                                <span id="cartArticlesNum" className="absolute -top-2 -right-2 bg-red-500 text-white text-xs w-5 h-5 flex items-center justify-center rounded-full">0</span>
+                            </div>
+                            <h3>Mi cesta</h3>
+                        </div>
                     </div>
-                    
-                    </div>
+                </div>   
             </header>
             <section>
-                cuerpo section
+                <div className="mt-5">
+                    {images.map((image) => (
+                        <div key={image.id} className="flex flex-row">
+                            <img src={image.src.original} alt={image.alt}/>
+                        </div>
+                    ))}
+                </div>
             </section>
             <footer>
                 pie de página

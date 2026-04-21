@@ -11,7 +11,7 @@ app.use(cors()) // --> Permito conexiones desde React
 app.get("/images", async (req, res) => {
     try {
         const response = await fetch( // --> Devuelve la respuesta HTTP (carta cerrada)
-            "https://api.pexels.com/v1/search?query=roller skates&per_page=8",
+            "https://api.pexels.com/v1/search?query=aggressive skates&per_page=8",
         {headers: {
             Authorization: process.env.PEXELS_API_KEY
         }
