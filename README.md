@@ -2,7 +2,7 @@
 
 Éste es un repositorio de práctica y portfolio con React y Tailwind que se divide en dos proyectos:
 - E-Comerce_CV
-- CVProject
+- TO-DO App
 
 ## Proyectos incluidos
 
