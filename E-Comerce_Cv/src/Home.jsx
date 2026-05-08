@@ -2,9 +2,11 @@ import "./App.css"
 import logo from "/Img/LogoE-comerce.png"
 import cartImg from "/Img/carritoImg.svg"
 import star from "/Img/star.svg"
-import { FiSearch, FiMenu, FiShoppingCart, FiUser, FiLock, FiChevronLeft, FiChevronRight   } from "react-icons/fi"
+import { FiSearch, FiMenu, FiShoppingCart, FiUser, FiLock, FiChevronLeft, FiChevronRight, FiInstagram } from "react-icons/fi"
+import { FaLinkedin, FaGithub } from "react-icons/fa";
 import { FcGoogle } from "react-icons/fc";
 import { HiOutlineX } from "react-icons/hi";
+import { IoIosArrowRoundUp } from "react-icons/io";
 import { useState, useEffect } from "react"
 
 export function App () {
@@ -26,7 +28,7 @@ export function App () {
     const [currentIndex, setCurrentIndex] = useState(0)
     const currentImage = heroImages[currentIndex]
     
-
+    {/**`${import.meta.env.VITE_API_URL}/home-data` */}
     function startSesion (){
         if (usrInput == email && pswInput === password) {
             setNameUser(name)
@@ -36,7 +38,7 @@ export function App () {
 
     useEffect(() => {
         async function loadHomeImages(){
-            const response = await fetch("http://localhost:3001/home-data")
+            const response = await fetch("/api/pexels")
             const data = await response.json()
             setHeroImages(data.heroImages)
             setHelmetImages(data.helmets)
@@ -82,7 +84,7 @@ export function App () {
                             <span className="text-xs cursor-pointer font-medium hover:underline">He olvidado mi contraseña</span>
                             <div className="flex flex-col">
                                 <div className="flex items-center gap-3 my-4">
-                                <div className="flex-1 h-px bg-gray-300"></div>
+                                    <div className="flex-1 h-px bg-gray-300"></div>
                                     <span className="text-gray-500 text-sm whitespace-nowrap">
                                       o continúa con
                                     </span>
@@ -92,7 +94,7 @@ export function App () {
                                     <button className="flex border cursor-pointer gap-2 items-center p-1 justify-center hover:bg-gray-100 transition"><FcGoogle className="text-xl"/>Continuar con Google</button>
                                     <span className="flex text-xs gap-1 justify-center font-medium"><h3>No tienes una cuenta?</h3><h3 className="text-blue-500 cursor-pointer font-bold">Crear una</h3></span>    
                                 </div>
-                          </div>
+                            </div>
                       </div>
                     </div>
                 </div>
@@ -124,7 +126,7 @@ export function App () {
             <header className="border-b p-4">
                 <div className="max-w-7xl mx-auto flex items-center justify-between gap-6">
                     <div className="flex items-center gap-3" id="headLeft">
-                        <a href="#">
+                        <a href="#" id="logoHome">
                             <img src={logo} alt="logo_EComerce" className="w-16"/>
                         </a>
                         <div className="flex items-center gap-2 cursor-pointer p-3 rounded hover:bg-gray-600 transition">
@@ -212,7 +214,7 @@ export function App () {
                     </div>
                 </div>
 
-                {/**Grid images divs*/}
+                {/**Grid divs*/}
                 <div className="w-full max-w-7xl mx-auto items-center justify-center pt-10">
                     <div className="flex items-center justify-center gap-5">
                         <div className="bg-white grid grid-cols-2 p-8 gap-3 w-1/3">
@@ -224,7 +226,7 @@ export function App () {
                                     <span className="text-black font-body">Casco</span>
                                 </div>
                             ))}
-                            <span className="text-blue-500 font-body font-semibold cursor-pointer">Ver más</span>
+                            <span className="text-blue-500 font-body font-semibold cursor-pointer w-fit hover:underline">Ver más</span>
                         </div>
                         <div className="bg-white grid grid-cols-2 p-8 gap-3 w-1/3">
                             {protectionsImages.map(helmet => (
@@ -235,7 +237,7 @@ export function App () {
                                     <span className="text-black font-body">Protección</span>
                                 </div>
                             ))}
-                            <span className="text-blue-500 font-body font-semibold cursor-pointer">Ver más</span>
+                            <span className="text-blue-500 font-body font-semibold cursor-pointer w-fit hover:underline">Ver más</span>
                         </div>
                         <div className="bg-white grid grid-cols-2 p-8 gap-3 w-1/3">
                             {wheelsImages.map(helmet => (
@@ -246,33 +248,9 @@ export function App () {
                                     <span className="text-black font-body">Ruedas</span>
                                 </div>
                             ))}
-                            <span className="text-blue-500 font-body font-semibold cursor-pointer">Ver más</span>
+                            <span className="text-blue-500 font-body font-semibold cursor-pointer w-fit hover:underline">Ver más</span>
                         </div>
                     </div> 
-                </div>
-                
-                <div className=" bg-gray-600 mt-10">
-                    
-                    <div className="grid w-full max-w-7xl mx-auto items-center justify-center pt-10 pb-10 gap-3">
-                        <div className="flex justify-between"><h2 className="text-4xl font-title">Productos más vendidos</h2><h3 className="font-body underline cursor-pointer">Ver más</h3></div>
-                        <div className="grid grid-cols-4 gap-3">
-                            {productsImages.slice(12,16).map((imgProd) => (
-                                <div key={imgProd.id} className="bg-white rounded-xl overflow-hidden hover:cursor-pointer hover:bg-amber-300 transition duration-400">
-                                    <div className="h-48">
-                                        <img src={imgProd.src.original} alt={imgProd.alt} className="w-full h-full object-cover"/> 
-                                    </div>
-                                    <div className="p-5 flex flex-col gap-2 text-black">
-                                        <h3 className="font-body text-xl font-semibold">Patín Agresivo</h3>
-                                        <p className="font-body">Lorem ipsum dolor sit amet consectetur adipisicing elit.</p>
-                                        <h2 className="font-body text-3xl font-bold">89'99€</h2>
-                                        <span className="flex items-center"><h3 className="font-body"><b>8/10 ·</b></h3>
-                                            <img src={star} alt="star" className="w-5 h-full"/><h3 className="font-body">1000 reseñas</h3>
-                                        </span>
-                                    </div>
-                                </div>
-                            ))}
-                        </div>
-                    </div>
                 </div>
 
                 <div className="grid w-full max-w-7xl mx-auto items-center justify-center p-8 gap-3">
@@ -297,9 +275,42 @@ export function App () {
                         </div>
                     </div>
             </section>
-            <footer>
-                <div className="flex gap-4 bg-gray-900">
-                    <h5>Condiciones de Uso y Venta</h5><h5>Aviso de privacidad</h5><h5>Área legal</h5><h5>Cookies</h5><h5>Publicidad basada en intereses</h5>
+            <footer className="bg-[#17191a] font-body mt-10">
+                <div className="w-full max-w-7xl mx-auto items-center p-8">
+                    <div id="footerSuperior" className="flex mt-5 justify-between items-center">
+                        <div className="flex flex-col gap-5 max-w-80 ">
+                            <a href="#logoHome" className="text-4xl font-title hover:text-yellow-500 transition duration-500 w-fit rounded">Prime Roller Skates</a>
+                            <h5 className="text-gray-400"><i>La tienda que necesitas para comprar lo que desees, para rodar a gusto y seguro</i></h5>
+                        </div>
+                        <nav className="flex items-center gap-4">
+                            <a href="#logoHome" className="hover:text-gray-400 transition">Inicio</a>
+                            <span class="text-gray-600">|</span>
+                            <a href="#" className="hover:text-gray-400 transition">Servicios</a>
+                            <span class="text-gray-600">|</span>
+                            <a href="#" className="hover:text-gray-400 transition">Sobre mi</a>
+                            <span class="text-gray-600">|</span>
+                            <a href="#" className="hover:text-gray-400 transition">Contacto</a>
+                        </nav>
+                        <div className="flex gap-7">
+                            <a href="https://instagram.com" className="text-2xl hover:text-orange-400 transition"><FiInstagram/></a>
+                            <a href="https://www.linkedin.com/in/emilio-haro-aa76bb175/" className="text-2xl hover:text-blue-400 transition"><FaLinkedin /></a>
+                            <a href="https://github.com/emilio-devx" className="text-2xl hover:text-purple-400 transition"><FaGithub /></a>
+                        </div>
+                    </div>
+                    <div className="flex items-center gap-3 my-10">
+                        <div className="flex-1 h-px bg-white opacity-40"></div>
+                    </div>
+                    <div id="footerInferior" className="flex mt-5 justify-between">
+                        <div className="text-gray-400 flex flex-col gap-3">
+                            <h5 className="hover:underline transition cursor-pointer w-fit">Condiciones de Uso y Venta</h5>
+                            <h5 className="hover:underline transition cursor-pointer w-fit">Aviso de privacidad</h5>
+                            <h5 className="hover:underline transition cursor-pointer w-fit">Área legal</h5>
+                            <h5 className="hover:underline transition cursor-pointer w-fit">Cookies</h5>
+                        </div>
+                        <div>
+                            <a href="#logoHome" className="transition duration-300 flex gap-2 text-gray-400 items-center hover:text-white"><IoIosArrowRoundUp className="text-3xl"/>Volver Arriba</a>
+                        </div>
+                    </div>
                 </div>
             </footer>
         </div>
