@@ -9,7 +9,7 @@ import { HiOutlineX } from "react-icons/hi";
 import { IoIosArrowRoundUp } from "react-icons/io";
 import { useState, useEffect } from "react"
 
-export function App () {
+export function Home () {
     const [accOpened, setAccOpened] = useState(false)
     const [cartOpened, setCartOpened] = useState(false)
     const [nameUser, setNameUser] = useState("Mi Cuenta")
@@ -40,11 +40,11 @@ export function App () {
         async function loadHomeImages(){
             const response = await fetch("/api/pexels")
             const data = await response.json()
-            setHeroImages(data.heroImages)
-            setHelmetImages(data.helmets)
-            setProtectionsImages(data.protections)
-            setWheelsImages(data.wheels)
-            setProductsImages(data.products)
+            setHeroImages(data.heroImages || [])
+            setHelmetImages(data.helmets || [])
+            setProtectionsImages(data.protections || [])
+            setWheelsImages(data.wheels || [])
+            setProductsImages(data.products || [])
         }
         loadHomeImages()
     }, [])
@@ -163,7 +163,7 @@ export function App () {
                         {heroImages.map(image => (
                             <div key={image.id} className="w-full h-full shrink-0">
                                 
-                                <img src={image.src.original} alt={image.alt} className="w-full h-full object-cover mask-b-from-50%"/>
+                                <img src={image.src.large2x} alt={image.alt} className="w-full h-full object-cover mask-b-from-50%"/>
                                 
                             </div>
                         ))}
@@ -174,10 +174,10 @@ export function App () {
                 </div>
                 {/**Productos hero */}
                 <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 3xl:grid-cols-6 w-full max-w-7xl mx-auto items-center justify-center gap-3 -mt-20 px-4">
-                    {productsImages.slice(0, 12).map((imgProd) => (
+                    {productsImages.slice(0, 8).map((imgProd) => (
                         <div key={imgProd.id} className="bg-white text-black rounded-xl shadow-lg overflow-hidden hover:cursor-pointer hover:bg-amber-300 transition duration-400">
                             <div className="h-48">
-                                <img src={imgProd.src.original} alt={imgProd.alt} className="w-full h-full object-cover"/>
+                                <img src={imgProd.src.medium} alt={imgProd.alt} loading="lazy" className="w-full h-full object-cover"/>
                             </div>
                             <div className="p-5 flex flex-col gap-2">
                                 <h3 className="font-body text-xl font-semibold">Patín Artístico</h3>
@@ -195,10 +195,10 @@ export function App () {
                     <div className="grid w-full max-w-7xl mx-auto items-center justify-center p-8 gap-3">
                         <div className="flex justify-between"><h2 className="text-4xl font-title">Productos más vendidos</h2><h3 className="font-body underline cursor-pointer">Ver más</h3></div>
                         <div className="grid grid-cols-4 gap-3">
-                            {productsImages.slice(12,16).map((imgProd) => (
+                            {productsImages.slice(8,12).map((imgProd) => (
                                 <div key={imgProd.id} className="bg-white rounded-xl overflow-hidden hover:cursor-pointer hover:bg-amber-300 transition duration-400">
                                     <div className="h-48">
-                                        <img src={imgProd.src.original} alt={imgProd.alt} className="w-full h-full object-cover"/> 
+                                        <img src={imgProd.src.medium} alt={imgProd.alt} loading="lazy" className="w-full h-full object-cover"/> 
                                     </div>
                                     <div className="p-5 flex flex-col gap-2 text-black">
                                         <h3 className="font-body text-xl font-semibold">Patín Agresivo</h3>
@@ -221,7 +221,7 @@ export function App () {
                             {helmetImages.map(helmet => (
                                 <div key={helmet.id} className="bg-white overflow-hidden cursor-pointer ">
                                     <div key={helmet.id} className="h-45">
-                                        <img src={helmet.src.original} alt={helmet.alt} className="w-full h-full object-cover"/>
+                                        <img src={helmet.src.medium} loading="lazy" alt={helmet.alt} className="w-full h-full object-cover"/>
                                     </div>
                                     <span className="text-black font-body">Casco</span>
                                 </div>
@@ -232,7 +232,7 @@ export function App () {
                             {protectionsImages.map(helmet => (
                                 <div key={helmet.id} className="bg-white overflow-hidden cursor-pointer">
                                     <div key={helmet.id} className="h-45">
-                                        <img src={helmet.src.original} alt={helmet.alt} className="w-full h-full object-cover"/>
+                                        <img src={helmet.src.medium} loading="lazy" alt={helmet.alt} className="w-full h-full object-cover"/>
                                     </div>
                                     <span className="text-black font-body">Protección</span>
                                 </div>
@@ -243,7 +243,7 @@ export function App () {
                             {wheelsImages.map(helmet => (
                                 <div key={helmet.id} className="bg-white overflow-hidden cursor-pointer">
                                     <div key={helmet.id} className="h-45">
-                                        <img src={helmet.src.original} alt={helmet.alt} className="w-full h-full object-cover"/>
+                                        <img src={helmet.src.medium} loading="lazy" alt={helmet.alt} className="w-full h-full object-cover"/>
                                     </div>
                                     <span className="text-black font-body">Ruedas</span>
                                 </div>
@@ -256,11 +256,11 @@ export function App () {
                 <div className="grid w-full max-w-7xl mx-auto items-center justify-center p-8 gap-3">
                         <h2 className="grid text-4xl font-title">Productos en Oferta</h2>
                         <div className="grid grid-cols-4 gap-3">
-                            {productsImages.slice(16,20).map((imgProd) => (
+                            {productsImages.slice(12,16).map((imgProd) => (
                                 <div key={imgProd.id} className="bg-white rounded-xl overflow-hidden hover:cursor-pointer border hover:bg-amber-300 transition duration-400 relative">
                                     <h3 className="bg-red-500 absolute font-bold font-body p-1 rounded-xl">-50%</h3>
                                     <div className="h-48">
-                                        <img src={imgProd.src.original} alt={imgProd.alt} className="w-full h-full object-cover"/> 
+                                        <img src={imgProd.src.medium} loading="lazy" alt={imgProd.alt} className="w-full h-full object-cover"/> 
                                     </div>
                                     <div className="p-5 flex flex-col gap-2 text-black ">
                                         <h3 className="font-body text-xl font-semibold">Patín fitness</h3>
@@ -275,6 +275,7 @@ export function App () {
                         </div>
                     </div>
             </section>
+            {/**Footer section */}
             <footer className="bg-[#17191a] font-body mt-10">
                 <div className="w-full max-w-7xl mx-auto items-center p-8">
                     <div id="footerSuperior" className="flex mt-5 justify-between items-center">
@@ -292,7 +293,7 @@ export function App () {
                             <a href="#" className="hover:text-gray-400 transition">Contacto</a>
                         </nav>
                         <div className="flex gap-7">
-                            <a href="https://instagram.com" className="text-2xl hover:text-orange-400 transition"><FiInstagram/></a>
+                            <a href="https://www.instagram.com/e_nathan7" className="text-2xl hover:text-orange-400 transition"><FiInstagram/></a>
                             <a href="https://www.linkedin.com/in/emilio-haro-aa76bb175/" className="text-2xl hover:text-blue-400 transition"><FaLinkedin /></a>
                             <a href="https://github.com/emilio-devx" className="text-2xl hover:text-purple-400 transition"><FaGithub /></a>
                         </div>
