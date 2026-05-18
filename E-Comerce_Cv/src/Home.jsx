@@ -157,7 +157,7 @@ export function Home () {
             </header>
             <section>
                 {/**Contenido del Hero */}
-                <div className="overflow-hidden relative w-full h-[300px] md:h-[450px] xl:h-[600px]">
+                <div className="overflow-hidden relative w-full h-[300] md:h-[450] xl:h-[600]">
                     <FiChevronLeft id="leftArrow" className="absolute bg-gray-600 opacity-50 hover:opacity-100 z-30 top-1/2 -translate-y-1/2 left-5 text-6xl transition cursor-pointer"
                         onClick={() => setCurrentIndex((prevIndex) => prevIndex == 0? (heroImages.length - 1) : (prevIndex-1))}/>
                     <div style={{transform: `translateX(-${currentIndex * 100}%)` }} className="flex transition-transform duration-500 h-full">
@@ -174,39 +174,58 @@ export function Home () {
                     
                 </div>
                 {/**Productos hero */}
-                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 w-full max-w-7xl mx-auto items-center justify-center gap-3 -mt-20 px-4">
+                <div className="grid text-sm grid-cols-2 sm:text-base lg:grid-cols-4 2xl:grid-cols-5 w-full max-w-7xl mx-auto items-center justify-center gap-3 -mt-20 px-4">
                     {productsImages.slice(0, 8).map((imgProd) => (
-                        <div key={imgProd.id} className="bg-white text-black rounded-xl shadow-lg overflow-hidden hover:cursor-pointer hover:bg-amber-300 transition duration-400">
-                            <div className="h-48">
+                        <div key={imgProd.id} className="text-center sm:text-left bg-white text-black rounded-xl shadow-lg overflow-hidden hover:cursor-pointer hover:bg-amber-300 transition duration-400">
+                            <div className="h-32 sm:h-48">
                                 <img src={imgProd.src.medium} alt={imgProd.alt} loading="lazy" className="w-full h-full object-cover"/>
                             </div>
                             <div className="p-5 flex flex-col gap-2">
                                 <h3 className="font-body text-xl font-semibold">Patín Artístico</h3>
                                 <p className="font-body text-gray-700">Lorem ipsum dolor sit amet consectetur adipisicing elit.</p>
-                                <h2 className="font-body text-3xl font-bold">89'99€</h2>
-                                <span className="flex items-center"><h3 className="font-body"><b>8/10 ·</b></h3>
-                                    <img src={star} alt="star" className="w-5 h-full"/><h3 className="font-body">1000 reseñas</h3>
+                                <h2 className="font-body text-lg sm:text-2xl font-bold">89'99€</h2>
+                                <span className="flex flex-col sm:flex-row items-center">
+                                    <span className="flex gap-1 font-body">
+                                        <h3>
+                                            <b>8/10 </b>
+                                        </h3>
+                                        <h3 className="hidden sm:block">·</h3>
+                                    </span>
+                                    <span className="flex">
+                                        <img src={star} alt="star" className="w-5 h-full"/>
+                                        <h3 className="font-body cursor-pointer hover:underline">1000 reseñas</h3>
+                                    </span>
                                 </span>
                             </div>
                         </div>
                     ))}
                 </div>
+                {/** --Prod mas vendidos-- */}
                 <div className=" bg-gray-600 mt-10">
                     
                     <div className="grid w-full max-w-7xl mx-auto items-center justify-center p-8 gap-3">
                         <div className="flex flex-col sm:flex-row sm:justify-between gap-3"><h2 className="text-4xl font-title">Productos más vendidos</h2><h3 className="font-body underline cursor-pointer">Ver más</h3></div>
-                        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
+                        <div className="grid text-sm grid-cols-2 sm:text-base lg:grid-cols-4 gap-3">
                             {productsImages.slice(8,12).map((imgProd) => (
-                                <div key={imgProd.id} className="bg-white rounded-xl overflow-hidden hover:cursor-pointer hover:bg-amber-300 transition duration-400">
-                                    <div className="h-48">
+                                <div key={imgProd.id} className="text-center sm:text-left bg-white rounded-xl overflow-hidden hover:cursor-pointer hover:bg-amber-300 transition duration-400">
+                                    <div className="h-32 sm:h-48">
                                         <img src={imgProd.src.medium} alt={imgProd.alt} loading="lazy" className="w-full h-full object-cover"/> 
                                     </div>
                                     <div className="p-5 flex flex-col gap-2 text-black">
                                         <h3 className="font-body text-xl font-semibold">Patín Agresivo</h3>
-                                        <p className="font-body">Lorem ipsum dolor sit amet consectetur adipisicing elit.</p>
-                                        <h2 className="font-body text-3xl font-bold">89'99€</h2>
-                                        <span className="flex items-center"><h3 className="font-body"><b>8/10 ·</b></h3>
-                                            <img src={star} alt="star" className="w-5 h-full"/><h3 className="font-body">1000 reseñas</h3>
+                                        <p className="font-body text-gray-700">Lorem ipsum dolor sit amet consectetur adipisicing elit.</p>
+                                        <h2 className="font-body text-lg sm:text-2xl font-bold">89'99€</h2>
+                                        <span className="flex flex-col sm:flex-row items-center">
+                                            <span className="flex gap-1 font-body">
+                                                <h3>
+                                                    <b>8/10 </b>
+                                                </h3>
+                                                <h3 className="hidden sm:block">·</h3>
+                                            </span>
+                                            <span className="flex items-center">
+                                                <img src={star} alt="star" className="w-5 h-full"/>
+                                                <h3 className="font-body cursor-pointer hover:underline">1000 reseñas</h3>
+                                            </span>
                                         </span>
                                     </div>
                                 </div>
@@ -221,7 +240,7 @@ export function Home () {
                         <div className="bg-white grid grid-cols-2 p-8 gap-3 w-full lg:w-1/3">
                             {helmetImages.map(helmet => (
                                 <div key={helmet.id} className="bg-white overflow-hidden cursor-pointer ">
-                                    <div key={helmet.id} className="h-45">
+                                    <div key={helmet.id} className="h-32 sm:h-45">
                                         <img src={helmet.src.medium} loading="lazy" alt={helmet.alt} className="w-full h-full object-cover"/>
                                     </div>
                                     <span className="text-black font-body">Casco</span>
@@ -232,7 +251,7 @@ export function Home () {
                         <div className="bg-white grid grid-cols-2 p-8 gap-3 w-full lg:w-1/3">
                             {protectionsImages.map(helmet => (
                                 <div key={helmet.id} className="bg-white overflow-hidden cursor-pointer">
-                                    <div key={helmet.id} className="h-45">
+                                    <div key={helmet.id} className="h-32 lg:h-45">
                                         <img src={helmet.src.medium} loading="lazy" alt={helmet.alt} className="w-full h-full object-cover"/>
                                     </div>
                                     <span className="text-black font-body">Protección</span>
@@ -243,7 +262,7 @@ export function Home () {
                         <div className="bg-white grid grid-cols-2 p-8 gap-3 w-full lg:w-1/3">
                             {wheelsImages.map(helmet => (
                                 <div key={helmet.id} className="bg-white overflow-hidden cursor-pointer">
-                                    <div key={helmet.id} className="h-45">
+                                    <div key={helmet.id} className="h-32 sm:h-45">
                                         <img src={helmet.src.medium} loading="lazy" alt={helmet.alt} className="w-full h-full object-cover"/>
                                     </div>
                                     <span className="text-black font-body">Ruedas</span>
@@ -256,19 +275,31 @@ export function Home () {
                 {/** --PRODS OFERTA-- */}
                 <div className="grid w-full max-w-7xl mx-auto items-center justify-center p-8 gap-3">
                         <h2 className="grid text-4xl font-title">Productos en Oferta</h2>
-                        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-3">
+                        <div className="grid text-sm grid-cols-2 lg:grid-cols-4 sm:text-base  gap-3">
                             {productsImages.slice(12,16).map((imgProd) => (
                                 <div key={imgProd.id} className="bg-white rounded-xl overflow-hidden hover:cursor-pointer border hover:bg-amber-300 transition duration-400 relative">
                                     <h3 className="bg-red-500 absolute font-bold font-body p-1 rounded-xl">-50%</h3>
-                                    <div className="h-48">
+                                    <div className="h-32 sm:h-48">
                                         <img src={imgProd.src.medium} loading="lazy" alt={imgProd.alt} className="w-full h-full object-cover"/> 
                                     </div>
-                                    <div className="p-5 flex flex-col gap-2 text-black ">
+                                    <div className="p-5 flex flex-col gap-2 text-black text-center sm:text-left">
                                         <h3 className="font-body text-xl font-semibold">Patín fitness</h3>
-                                        <p className="font-body">Lorem ipsum dolor sit amet consectetur adipisicing elit.</p>
-                                        <span className="flex items-center gap-3"><h2 className="font-body text-3xl font-bold">44'99€</h2><h3 className="font-body text-xl line-through text-gray-500">89'99€</h3></span>
-                                        <span className="flex items-center"><h3 className="font-body"><b>8/10 ·</b></h3>
-                                            <img src={star} alt="star" className="w-5 h-full"/><h3 className="font-body">1000 reseñas</h3>
+                                        <p className="font-body text-gray-700">Lorem ipsum dolor sit amet consectetur adipisicing elit.</p>
+                                        <span className="flex flex-col sm:flex-row items-center sm:gap-3">
+                                            <h2 className="font-body text-lg sm:text-3xl font-bold">44'99€</h2>
+                                            <h3 className="font-body text-sm sm:text-xl line-through text-gray-500">89'99€</h3>
+                                        </span>
+                                        <span className="flex flex-col sm:flex-row items-center">
+                                            <span className="flex gap-1 font-body">
+                                                <h3>
+                                                    <b>8/10 </b>
+                                                </h3>
+                                                <h3 className="hidden sm:block">·</h3>
+                                            </span>
+                                            <span className="flex items-center">
+                                                <img src={star} alt="star" className="w-5 h-full"/>
+                                                <h3 className="font-body cursor-pointer hover:underline">1000 reseñas</h3>
+                                            </span>
                                         </span>
                                     </div>
                                 </div>
